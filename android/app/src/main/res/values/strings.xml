@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">TodoApp</string>
+    <string name="title_activity_main">TodoApp</string>
+    <string name="package_name">com.personal.todoapp</string>
+    <string name="custom_url_scheme">com.personal.todoapp</string>
+</resources>
