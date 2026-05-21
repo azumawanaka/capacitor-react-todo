@@ -1,8 +1,6 @@
 # Capacitor JS + React + Android Studio — Todo App Documentation
 
-> Personal reference documentation.  
-> First time running a Capacitor JS app on Android Studio (May 21, 2026).  
-> Written for future self and as a portfolio/resume reference.
+> Personal reference documentation.
 
 ---
 
@@ -16,7 +14,7 @@
 6. [How Capacitor Works (The Bridge)](#6-how-capacitor-works-the-bridge)
 7. [Capacitor Preferences Plugin](#7-capacitor-preferences-plugin)
 8. [Running on Android Studio](#8-running-on-android-studio)
-9. [Errors Encountered & Fixes](#9-errors-encountered--fixes)
+9. [Errors Encountered &amp; Fixes](#9-errors-encountered--fixes)
 10. [Day-to-Day Development Workflow](#10-day-to-day-development-workflow)
 11. [Key Concepts Summary](#11-key-concepts-summary)
 
@@ -30,12 +28,12 @@ Think of it as a bridge between your JavaScript code and the native APIs of the 
 
 ### How it compares to alternatives
 
-| Tool | Approach | Native Access |
-|---|---|---|
-| **Capacitor** | Web app wrapped in native WebView | Yes, via plugins |
-| **React Native** | JS compiled to native components | Yes, deep |
-| **Cordova** | Same concept as Capacitor (older predecessor) | Yes, via plugins |
-| **PWA** | Just a web app pinned to home screen | Limited |
+| Tool             | Approach                                      | Native Access    |
+| ---------------- | --------------------------------------------- | ---------------- |
+| **Capacitor**    | Web app wrapped in native WebView             | Yes, via plugins |
+| **React Native** | JS compiled to native components              | Yes, deep        |
+| **Cordova**      | Same concept as Capacitor (older predecessor) | Yes, via plugins |
+| **PWA**          | Just a web app pinned to home screen          | Limited          |
 
 Capacitor is the modern spiritual successor to **Cordova/PhoneGap**. It's maintained actively and integrates cleanly with Vite/React.
 
@@ -43,18 +41,18 @@ Capacitor is the modern spiritual successor to **Cordova/PhoneGap**. It's mainta
 
 ## 2. Tech Stack
 
-| Layer | Technology | Version |
-|---|---|---|
-| Web Framework | React | 19.2.6 |
-| Build Tool | Vite | 8.0.12 |
-| Native Runtime | Capacitor | 8.3.4 |
-| Storage Plugin | @capacitor/preferences | 8.0.1 |
-| Android Platform | @capacitor/android | 8.3.4 |
-| Node.js | v20.19.5 (via nvm) | — |
-| npm | 10.8.2 | — |
-| Android Gradle Plugin | 8.7.2 | — |
-| ADB | 36.0.2 | — |
-| macOS | Sequoia 15.6 | — |
+| Layer                 | Technology             | Version |
+| --------------------- | ---------------------- | ------- |
+| Web Framework         | React                  | 19.2.6  |
+| Build Tool            | Vite                   | 8.0.12  |
+| Native Runtime        | Capacitor              | 8.3.4   |
+| Storage Plugin        | @capacitor/preferences | 8.0.1   |
+| Android Platform      | @capacitor/android     | 8.3.4   |
+| Node.js               | v20.19.5 (via nvm)     | —       |
+| npm                   | 10.8.2                 | —       |
+| Android Gradle Plugin | 8.7.2                  | —       |
+| ADB                   | 36.0.2                 | —       |
+| macOS                 | Sequoia 15.6           | —       |
 
 ---
 
@@ -162,8 +160,8 @@ In `vite.config.js`, set `base: './'`:
 ```js
 export default defineConfig({
   plugins: [react()],
-  base: './',   // required for Capacitor — assets use relative paths
-})
+  base: './', // required for Capacitor — assets use relative paths
+});
 ```
 
 Without this, the built app uses absolute paths (e.g., `/assets/index.js`) which don't work when loaded from the local filesystem inside a native WebView.
@@ -256,31 +254,31 @@ You write JavaScript. The device runs native code. You never have to touch Kotli
 
 ### Why not just use `localStorage`?
 
-| | `localStorage` | `@capacitor/preferences` |
-|---|---|---|
-| Web browser | ✅ | ✅ (falls back to localStorage) |
-| Android (native) | ❌ unreliable | ✅ SharedPreferences |
-| iOS (native) | ❌ unreliable | ✅ UserDefaults |
-| Can be cleared by OS | Yes | No |
-| Works offline | Yes | Yes |
+|                      | `localStorage` | `@capacitor/preferences`        |
+| -------------------- | -------------- | ------------------------------- |
+| Web browser          | ✅             | ✅ (falls back to localStorage) |
+| Android (native)     | ❌ unreliable  | ✅ SharedPreferences            |
+| iOS (native)         | ❌ unreliable  | ✅ UserDefaults                 |
+| Can be cleared by OS | Yes            | No                              |
+| Works offline        | Yes            | Yes                             |
 
 ### Usage in code
 
 ```js
-import { Preferences } from '@capacitor/preferences'
+import { Preferences } from '@capacitor/preferences';
 
 // Save
-await Preferences.set({ key: 'todos', value: JSON.stringify(data) })
+await Preferences.set({ key: 'todos', value: JSON.stringify(data) });
 
 // Load
-const { value } = await Preferences.get({ key: 'todos' })
-const data = JSON.parse(value)
+const { value } = await Preferences.get({ key: 'todos' });
+const data = JSON.parse(value);
 
 // Delete
-await Preferences.remove({ key: 'todos' })
+await Preferences.remove({ key: 'todos' });
 
 // Clear all
-await Preferences.clear()
+await Preferences.clear();
 ```
 
 All methods are **async (Promise-based)**.
@@ -291,15 +289,15 @@ All methods are **async (Promise-based)**.
 // On app load — read from native storage
 useEffect(() => {
   Preferences.get({ key: 'todos' }).then(({ value }) => {
-    if (value) setTodos(JSON.parse(value))
-  })
-}, [])
+    if (value) setTodos(JSON.parse(value));
+  });
+}, []);
 
 // On every change — write to native storage
 const save = (updated) => {
-  setTodos(updated)
-  Preferences.set({ key: 'todos', value: JSON.stringify(updated) })
-}
+  setTodos(updated);
+  Preferences.set({ key: 'todos', value: JSON.stringify(updated) });
+};
 ```
 
 Todos persist across app restarts — both in browser and on the Android device.
@@ -346,6 +344,7 @@ npx cap run android
 **Cause:** Node.js version too old (v16). `create-vite` v9+ requires Node >= 20.
 
 **Fix:**
+
 ```bash
 nvm use 20
 npm create vite@latest todo-app -- --template react
@@ -358,6 +357,7 @@ npm create vite@latest todo-app -- --template react
 **Cause:** `@capacitor/android` was not installed before running `npx cap add android`.
 
 **Fix:**
+
 ```bash
 npm install @capacitor/android
 npx cap add android
@@ -368,6 +368,7 @@ npx cap add android
 ### Error 3: Duplicate Kotlin class errors
 
 **Full error pattern:**
+
 ```
 Duplicate class kotlin.collections.jdk8.CollectionsJDK8Kt found in modules
 kotlin-stdlib-1.8.22.jar and kotlin-stdlib-jdk8-1.6.21.jar
@@ -434,27 +435,27 @@ No build/sync needed for browser testing. Only sync when you want to test on the
 
 ### Capacitor sync vs. copy
 
-| Command | What it does |
-|---|---|
-| `npx cap sync` | Copies web assets + updates native plugins |
-| `npx cap copy` | Copies web assets only (faster, no plugin updates) |
-| `npx cap update` | Updates native plugins only |
+| Command          | What it does                                       |
+| ---------------- | -------------------------------------------------- |
+| `npx cap sync`   | Copies web assets + updates native plugins         |
+| `npx cap copy`   | Copies web assets only (faster, no plugin updates) |
+| `npx cap update` | Updates native plugins only                        |
 
 ---
 
 ## 11. Key Concepts Summary
 
-| Concept | What it means |
-|---|---|
-| **WebView** | The browser engine embedded inside the native app that renders your React app |
-| **Capacitor Bridge** | The communication layer between JavaScript and native device APIs |
-| **Capacitor Plugin** | A package that exposes a native API to JavaScript (e.g., Preferences, Camera, Geolocation) |
-| **`cap add android`** | Generates the native Android project structure inside `/android` |
-| **`cap sync`** | Copies built web files into the native project and updates plugin configs |
-| **`cap open android`** | Opens the native project in Android Studio |
-| **`webDir`** | The folder Capacitor reads for built web assets (must match Vite's output folder: `dist`) |
-| **`base: './'`** | Vite config that makes asset paths relative — required for Capacitor's file-based loading |
-| **`ANDROID_HOME`** | Environment variable pointing to the Android SDK — required for Capacitor CLI |
+| Concept                | What it means                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------ |
+| **WebView**            | The browser engine embedded inside the native app that renders your React app              |
+| **Capacitor Bridge**   | The communication layer between JavaScript and native device APIs                          |
+| **Capacitor Plugin**   | A package that exposes a native API to JavaScript (e.g., Preferences, Camera, Geolocation) |
+| **`cap add android`**  | Generates the native Android project structure inside `/android`                           |
+| **`cap sync`**         | Copies built web files into the native project and updates plugin configs                  |
+| **`cap open android`** | Opens the native project in Android Studio                                                 |
+| **`webDir`**           | The folder Capacitor reads for built web assets (must match Vite's output folder:`dist`)   |
+| **`base: './'`**       | Vite config that makes asset paths relative — required for Capacitor's file-based loading  |
+| **`ANDROID_HOME`**     | Environment variable pointing to the Android SDK — required for Capacitor CLI              |
 
 ---
 
@@ -470,4 +471,4 @@ No build/sync needed for browser testing. Only sync when you want to test on the
 
 ---
 
-*Built and documented on May 21, 2026 — macOS Sequoia 15.6, Node 20, Capacitor 8, Android Studio.*
+_Built and documented on May 21, 2026 — macOS Sequoia 15.6, Node 20, Capacitor 8, Android Studio._
